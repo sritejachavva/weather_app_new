@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Windy City Live Webcam</title>
+</head>
+<body>
+  <h1>Windy City Live Webcam</h1>
+  <p>This webpage displays a live image from a Windy City webcam.</p>
+  <img id="webcam_image" src="placeholder.jpg" alt="Windy City Webcam">
+  <script>
+    // Replace with your actual Windy API key
+    const apiKey = "fZnrhlxo9z9aT8uuSPMwzg9aSuY9wQAJ";
+
+    // Replace with the webcam ID you choose from Windy
+    const webcamId = "1604839522"; // Replace with actual ID
+
+    function updateWebcamImage() {
+      const apiUrl = `https://api.windy.com/webcams/api/v3/webcams/${1604839522}?include=categories,images,location,player,urls&lang=en`;
+      //const apiUrl = `https://api.windy.com/webcams/api/v3/webcams?countries=DE`;
+
+      const headers = new Headers();
+      headers.append("X-WINDY-API-KEY", apiKey);
+
+      const options = {
+        method: 'GET', // GET is the default method for fetching data
+        headers: headers
+      };
+
+      fetch(apiUrl, options)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+          const imageUrl = data.images.current.preview;
+          if (imageUrl) {
+            document.getElementById("webcam_image").src = imageUrl;
+          } else {
+            console.error("Error fetching webcam image");
+          }
+        })
+        .catch(error => console.error(error));
+    }
+
+    // Update the image every 5 minutes (adjust as needed)
+    setInterval(updateWebcamImage, 300000);
+
+    // Call the function to update the image initially
+    updateWebcamImage();
+  </script>
+</body>
+</html>
