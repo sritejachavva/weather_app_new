@@ -2,13 +2,31 @@
 <html>
 <head>
   <title>Windy City Live Webcam</title>
-  <script src="myjs.js"></script>
+  <script src="myjs.js" defer></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Windy City Live Webcam</h1>
-  <p>This webpage displays a live image from a Windy City webcam.</p>
-  <img id="webcam_image" src="placeholder.jpg" alt="Windy City Webcam">
+  <div class = "title">
+    <h1>Worldwide Weather Checker</h1>
+  </div>
+
+  <div class = "weather_info">
+    <div class = "input_location">
+      <div class="autocomplete-container">
+        <label for="city">Enter City: </label>
+        <input list="cities" id="city" name="city" autocomplete="off">
+        <datalist id="cities"></datalist>
+      </div>
+    </div>
+
+    <p>This webpage displays a live image from a Windy City webcam.</p>
+    <img id="webcam_image" src="placeholder.jpg" alt="Windy City Webcam">
+
+  </div>
+
+
+
+
 
 </body>
 </html>
