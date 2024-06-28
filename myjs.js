@@ -3,7 +3,6 @@
 const apiKey = "fZnrhlxo9z9aT8uuSPMwzg9aSuY9wQAJ";
 
 // Replace with the webcam ID you choose from Windy
-const webcamId = "1604839522"; // Replace with actual ID
 
 const webcam_image_div = document.getElementsByClassName("webcam_image_div")[0];
 

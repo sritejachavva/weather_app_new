@@ -57,14 +57,21 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
 } */
 
-.webcam_image_div {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px; /* Adjust the gap as needed */
+
+.weather_div{
     width: 50%;
     background-color: antiquewhite;
     padding: 1em;
     border-radius: 10px;
+
+}
+
+
+.webcam_image_div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; /* Adjust the gap as needed */
+    
 }
 .webcam_image_div img {
     width: 100%;
