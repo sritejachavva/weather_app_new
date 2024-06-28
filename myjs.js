@@ -9,7 +9,7 @@ const webcam_image_div = document.getElementsByClassName("webcam_image_div")[0];
 
 
 async function pullWebcamId(long,lat){
-  const apiUrl_webcam = `https://api.windy.com/webcams/api/v3/webcams?nearby=${lat},${long},20`
+  const apiUrl_webcam = `https://api.windy.com/webcams/api/v3/webcams?nearby=${lat},${long},10`
   const headers = new Headers();
   headers.append("X-WINDY-API-KEY", apiKey);
 
@@ -23,11 +23,11 @@ async function pullWebcamId(long,lat){
     const webcam_list = await response.json();
     console.log('hi')
     console.log(`${long},${lat}`)
-    const first5Webcams = webcam_list.webcams.slice(0, 5);
+    const first5Webcams = webcam_list.webcams.slice(0, 6);
     console.log(JSON.stringify(first5Webcams, null, 2));
     console.log(first5Webcams.slice(0, 5).map(webcam => webcam.webcamId))
     //return(first5Webcams[0].webcamId)
-    return (first5Webcams.slice(0, 5).map(webcam => webcam.webcamId))
+    return (first5Webcams.slice(0, 6).map(webcam => webcam.webcamId))
   }
 
   return getWebcam();
@@ -37,6 +37,8 @@ async function pullWebcamId(long,lat){
 async function updateWebcamImage(long, lat) {
 
   const webcamIds_new = await pullWebcamId(long, lat);
+  webcam_image_div.innerHTML = "";
+
 
   for (const webcam_curr of webcamIds_new){
     
