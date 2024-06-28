@@ -5,6 +5,8 @@ const apiKey = "fZnrhlxo9z9aT8uuSPMwzg9aSuY9wQAJ";
 // Replace with the webcam ID you choose from Windy
 const webcamId = "1604839522"; // Replace with actual ID
 
+const webcam_image_div = document.getElementsByClassName("webcam_image_div")[0];
+
 
 async function pullWebcamId(long,lat){
   const apiUrl_webcam = `https://api.windy.com/webcams/api/v3/webcams?nearby=${lat},${long},20`
@@ -23,38 +25,48 @@ async function pullWebcamId(long,lat){
     console.log(`${long},${lat}`)
     const first5Webcams = webcam_list.webcams.slice(0, 5);
     console.log(JSON.stringify(first5Webcams, null, 2));
-
+    console.log(first5Webcams.slice(0, 5).map(webcam => webcam.webcamId))
+    //return(first5Webcams[0].webcamId)
+    return (first5Webcams.slice(0, 5).map(webcam => webcam.webcamId))
   }
 
-  getWebcam();
-
-
+  return getWebcam();
 
 }
 
 async function updateWebcamImage(long, lat) {
 
-  const webcamId_new = await pullWebcamId(long, lat);
-  const apiUrl = `https://api.windy.com/webcams/api/v3/webcams/${webcamId}?include=categories,images,location,player,urls&lang=en`;
+  const webcamIds_new = await pullWebcamId(long, lat);
 
-  const headers = new Headers();
-  headers.append("X-WINDY-API-KEY", apiKey);
+  for (const webcam_curr of webcamIds_new){
+    
+  
+    const webcamId_new = webcam_curr;
+    console.log(`this webcam ${webcamId_new}`)
+    const apiUrl = `https://api.windy.com/webcams/api/v3/webcams/${webcamId_new}?include=categories,images,location,player,urls&lang=en`;
 
-  const options = {
-    method: 'GET', // GET is the default method for fetching data
-    headers: headers
-  };
+    const headers = new Headers();
+    headers.append("X-WINDY-API-KEY", apiKey);
 
-  async function getImage() {
-    const response = await fetch(apiUrl, options);
-    const image_object = await response.json();
-    imageUrl = image_object.images.current.preview
-    if (imageUrl) {
-        document.getElementById("webcam_image").src = imageUrl;
-      }
-    //console.log(image_object);
+    const options = {
+      method: 'GET', // GET is the default method for fetching data
+      headers: headers
+    };
+
+    async function getImage() {
+      const response = await fetch(apiUrl, options);
+      const image_object = await response.json();
+      imageUrl = image_object.images.current.preview
+      if (imageUrl) {
+          const webcam_image = document.createElement('img');
+          //document.getElementById("webcam_image").src = imageUrl;
+          webcam_image.src = imageUrl;
+          webcam_image_div.appendChild(webcam_image);
+          
+        }
+    }
+    getImage()
   }
-  getImage()
 
 
 }
@@ -63,7 +75,6 @@ async function getCityCoordinates(apiUrl) {
   const response = await fetch(apiUrl);
   
   const city_object = await response.json();
-  //console.log(city_object[0]);
   return city_object[0];
 }
 
@@ -90,11 +101,6 @@ async function getCity(){
 
     });
   });
-
-  
-  
-  
-
 }
 
 
@@ -102,8 +108,7 @@ async function getCity(){
 
 // Call the function to update the image initially
 
-updateWebcamImage();
+//updateWebcamImage();
 getCity();
-//  <object class="wavy-curve" type="image/svg+xml" data="wavy-curve.svg"></object>
 
 
