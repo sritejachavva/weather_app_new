@@ -20,8 +20,6 @@ async function pullWebcamId(long,lat){
   async function getWebcam() {
     const response = await fetch(apiUrl_webcam, options);
     const webcam_list = await response.json();
-    console.log('hi')
-    console.log(`${long},${lat}`)
     const first5Webcams = webcam_list.webcams.slice(0, 6);
     console.log(JSON.stringify(first5Webcams, null, 2));
     console.log(first5Webcams.slice(0, 5).map(webcam => webcam.webcamId))
@@ -76,8 +74,49 @@ async function getCityCoordinates(apiUrl) {
   const response = await fetch(apiUrl);
   
   const city_object = await response.json();
+  console.log('hi')
+  console.log(JSON.stringify(city_object, null, 2));
   return city_object[0];
 }
+
+function utcTolocalTime(timecode, long,lat){
+
+
+}
+
+async function updateWeather(lon, lat){
+
+  const api_key = "c7778451b0b032729ec94b6b0390dd0d";
+
+  
+  const apiUrl =  `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api_key}`
+  
+  const response = await fetch(apiUrl);
+  const weatherResponse = await response.json();
+
+  const weatherDiv = document.getElementsByClassName('weather')[0]; 
+  weather_3 = weatherResponse.list.slice(0,3);
+  for (const weather_info of weather_3){
+    const weatherBlock = document.createElement('div');
+    const weatherBlock_weather_date = document.createElement('h4');
+    weatherBlock_weather_date.innerText = weather_info.dt_txt
+    const weatherBlock_weather_reading = document.createElement('p');
+    weatherBlock_weather_reading.innerText = (weather_info.main.feels_like - 273.15) * 1.8 + 32
+
+    weatherBlock.appendChild(weatherBlock_weather_date);
+    weatherBlock.appendChild(weatherBlock_weather_reading);
+    weatherDiv.appendChild(weatherBlock);
+
+
+  }
+
+  //console.log(JSON.stringify(, null, 2));
+
+  //return weatherResponse.list.slice(0,3)
+}
+
+
+
 
 async function getCity(){
   
@@ -93,9 +132,10 @@ async function getCity(){
 
       const apiUrl = `https://geocode.maps.co/search?q=${cityInput}&api_key=${geocode_api}`;
       city_object = await getCityCoordinates(apiUrl);
-
+   
       if (city_object) {
         await updateWebcamImage(city_object.lon, city_object.lat);
+        await updateWeather(city_object.lon, city_object.lat);
       } else {
         console.error('Failed to fetch city data.');
       }

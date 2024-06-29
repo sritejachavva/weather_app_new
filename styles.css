@@ -1,12 +1,16 @@
-@font-face {
+/* @font-face {
     font-family: 'Virgil';
     src: url('fonts/Virgil.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
-}
+} */
+
+/* body {
+    font-family: 'Virgil', sans-serif;
+} */
 
 body {
-    font-family: 'Virgil', sans-serif;
+    font-family:  sans-serif;
 }
 
 .title {
