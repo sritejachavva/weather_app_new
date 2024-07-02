@@ -82,3 +82,26 @@ body {
     border-radius: 10px;
     /* height: auto; */
 }
+
+.weather_readings{
+    width: 50%;
+    border-radius: 10px;
+    background-color: antiquewhite;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1em;
+    gap: 2em;
+    
+}
+
+.weather_info{
+    display:flex;
+    gap: 2em;
+    
+}
+
+.hourly_weather_card{
+    border-radius: 10px;
+    padding: 1em;
+    background-color: #f3f3f3;
+}

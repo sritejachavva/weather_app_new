@@ -79,7 +79,23 @@ async function getCityCoordinates(apiUrl) {
   return city_object[0];
 }
 
-function utcTolocalTime(timecode, long,lat){
+function parseDt(weatherDate_str){
+
+    weatherDate = new Date(weatherDate_str);
+
+    // Extract the hour, date, and whether it's AM or PM
+    let hours = weatherDate.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // The hour '0' should be '12'
+
+    const formattedTime = `${hours} ${ampm}`;
+    const formattedDate = weatherDate.toISOString().split('T')[0];
+
+    console.log(`Time: ${formattedTime}`);
+    console.log(`Date: ${formattedDate}`);
+
+    return [formattedDate,formattedTime]
 
 
 }
@@ -94,16 +110,22 @@ async function updateWeather(lon, lat){
   const response = await fetch(apiUrl);
   const weatherResponse = await response.json();
 
-  const weatherDiv = document.getElementsByClassName('weather')[0]; 
+  const weatherDiv = document.getElementsByClassName('weather_readings')[0]; 
   weather_3 = weatherResponse.list.slice(0,3);
   for (const weather_info of weather_3){
     const weatherBlock = document.createElement('div');
+    weatherBlock.classList.add("hourly_weather_card");
+    const parsedDate = parseDt(weather_info.dt_txt)
     const weatherBlock_weather_date = document.createElement('h4');
-    weatherBlock_weather_date.innerText = weather_info.dt_txt
+    weatherBlock_weather_date.innerText = parsedDate[0];
+    const weatherBlock_weather_time = document.createElement('h5');
+    weatherBlock_weather_time.innerText = parsedDate[1]
+    //weather_info.dt_txt
     const weatherBlock_weather_reading = document.createElement('p');
-    weatherBlock_weather_reading.innerText = (weather_info.main.feels_like - 273.15) * 1.8 + 32
+    weatherBlock_weather_reading.innerText =  (Math.round(10*((weather_info.main.feels_like - 273.15) * 1.8 + 32)))/10
 
     weatherBlock.appendChild(weatherBlock_weather_date);
+    weatherBlock.appendChild(weatherBlock_weather_time);
     weatherBlock.appendChild(weatherBlock_weather_reading);
     weatherDiv.appendChild(weatherBlock);
 
