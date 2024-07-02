@@ -105,20 +105,41 @@ async function updateWeather(lon, lat){
   const api_key = "c7778451b0b032729ec94b6b0390dd0d";
 
   
-  const apiUrl =  `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api_key}`
+  const apiUrl =  `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${api_key}`;
   
   const response = await fetch(apiUrl);
   const weatherResponse = await response.json();
 
   const weatherDiv = document.getElementsByClassName('weather_readings')[0]; 
+  weatherDiv.innerHTML = "";
   weather_3 = weatherResponse.list.slice(0,3);
+  
+  const weatherValues = document.getElementsByClassName('weather_values')[0];
+  
+  // const weatherHeading = document.createElement('p');
+  // weatherHeading.innerHTML = "";
+  // weatherHeading.innerText = "This displays the weather for the next 6 hours";
+  // weatherValues.insertBefore(weatherHeading, weatherValues.firstChild);
+
+  if (!document.getElementById('weatherHeading')) {
+    const weatherHeading = document.createElement('p');
+    weatherHeading.id = 'weatherHeading';  // Add an id to identify it later
+    weatherHeading.innerText = "This displays the weather for the next 6 hours";
+    weatherValues.insertBefore(weatherHeading, weatherValues.firstChild);
+  }
+
+
+  
+
+  
+
   for (const weather_info of weather_3){
     const weatherBlock = document.createElement('div');
     weatherBlock.classList.add("hourly_weather_card");
     const parsedDate = parseDt(weather_info.dt_txt)
-    const weatherBlock_weather_date = document.createElement('h4');
+    const weatherBlock_weather_date = document.createElement('h3');
     weatherBlock_weather_date.innerText = parsedDate[0];
-    const weatherBlock_weather_time = document.createElement('h5');
+    const weatherBlock_weather_time = document.createElement('h3');
     weatherBlock_weather_time.innerText = parsedDate[1]
     //weather_info.dt_txt
     const weatherBlock_weather_reading = document.createElement('p');
