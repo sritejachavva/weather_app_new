@@ -56,11 +56,15 @@ async function updateWebcamImage(long, lat) {
       const response = await fetch(apiUrl, options);
       const image_object = await response.json();
       imageUrl = image_object.images.current.preview
+      console.log(JSON.stringify(image_object, null, 2));
       if (imageUrl) {
           const webcam_image = document.createElement('img');
+          webcam_image.classList.add('webcam-img');
           //document.getElementById("webcam_image").src = imageUrl;
           webcam_image.src = imageUrl;
+          webcam_image.setAttribute('data-src',imageUrl)
           webcam_image_div.appendChild(webcam_image);
+
           
         }
     }
@@ -188,11 +192,38 @@ async function getCity(){
 }
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  const closeModal = document.getElementsByClassName('close')[0];
+
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('webcam-img')) {
+      modal.style.display = "block";
+      modalImg.src = event.target.getAttribute('data-src');
+    }
+  });
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+});
+
+
+
+
 
 
 // Call the function to update the image initially
 
 //updateWebcamImage();
 getCity();
+
 
 
